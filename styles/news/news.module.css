@@ -1,0 +1,45 @@
+.custom-prev-arrow,
+.custom-next-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.custom-prev-arrow {
+  left: 10px;
+}
+
+.custom-next-arrow {
+  right: 10px;
+}
+
+.Carousel {
+
+    width: 80%;
+    margin: 5vh auto;
+    
+}
+
+.NewsCarousel{
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    height: 52vh;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+
+}
+
+.CarouselTitle {
+    position: absolute;
+    bottom: 0;
+    width:  100%;
+    height:  25%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

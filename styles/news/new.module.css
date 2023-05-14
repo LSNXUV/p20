@@ -1,0 +1,8 @@
+
+.Paragraph {
+    font-size: 24px;
+    font-weight: 500;
+    text-indent: 2em; /* 设置缩进宽度，这里是2个字符宽度 */
+    margin-bottom: 1em; /* 设置段间距，这里是1个字符高度 */
+    line-height: 2.2;
+}

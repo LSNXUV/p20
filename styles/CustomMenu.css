@@ -1,0 +1,41 @@
+/* 自定义导航栏样式 */
+.custom-menu {
+  margin-left: 10vw;
+  width: 100vw;
+  color: #ffffff;
+  background-color: #9a0000;
+  font-size: 1.1rem;
+}
+
+.custom-menu-cinema {
+  margin-left: 10vw;
+  width: 100vw;
+  color: #ffffff;
+  background-color: transparent;
+  font-size: 1.1rem;
+}
+
+/* 初始状态下的Menu.Item样式 */
+.custom-menu .ant-menu-item {
+  color: #ffffff;
+  line-height: 8vh;
+}
+
+.custom-menu-cinema .ant-menu-item {
+  color: #ffffff;
+  line-height: 8vh;
+}
+
+/* hover状态下的Menu.Item样式 */
+.custom-menu .ant-menu-item:hover,
+.custom-menu .ant-menu-item-selected {
+  background-color: #ffffff;
+  color: #9a0000;
+}
+
+.custom-menu-cinema .ant-menu-item:hover,
+.custom-menu-cinema .ant-menu-item-selected {
+  /* background-color: #dfdfdf; */
+  background-color: transparent;
+  color: #8e0000;
+}
