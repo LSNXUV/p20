@@ -49,7 +49,7 @@ const Barrage = ({ prebrs,pid}) => {
 
   const addBarrage = async () => {
     
-    let time = 2
+    let time = 0.7
     setfAnimation(`flower linear ${time}s`)
     setTimeout(() => {
       setfAnimation('')

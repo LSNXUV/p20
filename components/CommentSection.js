@@ -46,8 +46,7 @@ const CommentSection = ({ PostId, Comments }) => {
       return;
     }
 
-    setSubmitting(true);
-    console.log('开始请求')
+    setSubmitting(true)
     //评论
     try {
       const response = await axios.post(apihost+'/v1/post/addComment', {
