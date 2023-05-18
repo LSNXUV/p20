@@ -1,6 +1,6 @@
 .Pcontainer {
   width: 100%;
-  background-image: url('/img/pibg3.png');
+  background-image: url('/img/pi/pibg3.png');
   background-size: 100% auto;
   background-repeat: no-repeat;
   background-color: #650700;
@@ -43,9 +43,12 @@
 }
 
 .whiteText {
+  font-family: 'SourceHanSerifSC-Heavy', sans-serif;
   color: #ffffff !important;
 }
-
+.whitePar {
+  color: #ffffff !important;
+}
 .Paragraph {
   text-indent: 2em;
   /* 设置缩进宽度，这里是2个字符宽度 */

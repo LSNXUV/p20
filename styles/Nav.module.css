@@ -7,7 +7,7 @@
 
 .topImage {
     object-fit: cover;
-    object-position: 0px -25vh;
+    /* object-position: 0px -25vh; */
 }
 
 .logo {

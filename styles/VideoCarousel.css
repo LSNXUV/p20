@@ -49,15 +49,12 @@
   overflow: hidden;
 }
 
-/* .carousel-video {
-  
-} */
 
 .video-info-card {
   position: absolute;
   left: 5%;
   bottom: 15%;
-  width: 30vw;
+  width: 40vw;
   max-height: 50vh
 }
 
@@ -71,4 +68,6 @@
 }
 .play-pause-btn:hover{
   color: #9a0000 !important;
+  font-size: 30px !important;
+  bottom: 11vh;
 }

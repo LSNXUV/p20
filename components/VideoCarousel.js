@@ -77,7 +77,7 @@ const VideoCarousel = ({ videos }) => {
 
   useEffect(() => {
 
-  }, [isPlaying,activeIndex]);
+  }, []);
 
   const handlePlayPause = () => {
 
@@ -85,20 +85,23 @@ const VideoCarousel = ({ videos }) => {
   }
 
   const handlePrev = () => {
-    setIsPlaying(!isPlaying)
+    if (activeIndex > 0) {
+      setActiveIndex(activeIndex - 1);
+    }
     carouselRef.current.prev();
   }
 
   const handleNext = () => {
-    setIsPlaying(!isPlaying)
+    if (activeIndex < videos.length - 1) {
+      setActiveIndex(activeIndex + 1);
+    }
     carouselRef.current.next();
   }
 
-  const onVideoEnded = (index) => {
-    setActiveIndex(index)
-    setIsPlaying(!isPlaying)
-    carouselRef.current.next();
-  };
+  const onVideoEnded = () => {
+      setIsPlaying(false);
+      setTimeout(() => setIsPlaying(true), 0);
+  }
 
   return (
     <div className="video-carousel-container">
@@ -130,14 +133,16 @@ const VideoCarousel = ({ videos }) => {
           beforeChange={(oldIndex, newIndex) => {
             // console.log(oldIndex,newIndex)
             //暂停掉原来的
+            /* setActiveIndex(newIndex)
+            setIsPlaying(!isPlaying) */
             setActiveIndex(newIndex)
-            setIsPlaying(!isPlaying)
+            setIsPlaying(false);
           }}
           afterChange={(currentIndex) => {
             // console.log(currentIndex)
             //开始播放新的
             setActiveIndex(currentIndex)
-            setIsPlaying(!isPlaying)
+            setIsPlaying(true)
           }}
         >
           {videos.map((video, index) => (
@@ -146,16 +151,15 @@ const VideoCarousel = ({ videos }) => {
                 // controls
                 url={video.bg_video.replace(domain, "")}
                 playing={ isPlaying && activeIndex === index}
-                onEnded={() => onVideoEnded(index)}
+                onEnded={() => onVideoEnded()}
                 width={'100vw'}
                 height={'100vh'}
-                // className="carousel-video"
               />
               <Card
                 hoverable
                 bordered={false}
                 className="video-info-card"
-                cover={<Image style={{ objectFit: 'contain', maxHeight: '27vh' }} preview={false} alt={video.name} src={video.name_img.replace(domain, "")} />}
+                cover={<Image style={{ objectFit: 'contain', maxHeight: '27vh',maxWidth:'25vw' }} preview={false} alt={video.name} src={video.name_img.replace(domain, "")} />}
                 onClick={() => {
                 }}
               >
@@ -177,10 +181,11 @@ const VideoCarousel = ({ videos }) => {
 
               </Card>
               <Button
+                style={{ fontSize: '20px' }}
                 className="play-pause-btn"
                 icon={isPlaying ? <PauseCircleOutlined /> : <PlayCircleOutlined />}
                 onClick={handlePlayPause}
-                style={{ fontSize: '30px' }}
+                
               />
             </div>
           ))}

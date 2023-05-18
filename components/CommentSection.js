@@ -46,6 +46,7 @@ const CommentSection = ({ PostId, Comments }) => {
       return;
     }
 
+    let cmt
     setSubmitting(true)
     //评论
     try {
@@ -71,23 +72,40 @@ const CommentSection = ({ PostId, Comments }) => {
         return
       }
 
-      const cmt = response.data.data
-
+      cmt = response.data.data
       setSubmitting(false)
-      setValue('')
-      setComments([
-        cmt,
-        ...comments
-      ])
+  
 
-      messageApi.open({
-        type: 'success',
-        content: '发表成功！',
-      })
     } catch (error) {
+      setSubmitting(false)
+        // console.log(response.data)
+        /* messageApi.open({
+          type: 'error',
+          content: error.message,
+        }) */
       console.error(error);
     }
+    
+    setSubmitting(false)
+    setValue('')
 
+    setComments([
+      cmt ??
+      {
+        author,
+        avatar:'/img/avatar/4.png',
+        posted_at:getNow(),
+        content:value,
+        isLiked:false,
+        like_count:0
+      },
+      ...comments
+    ])
+
+    messageApi.open({
+      type: 'success',
+      content: '发表成功！',
+    })
   }
 
   function formatLikes(likes) {

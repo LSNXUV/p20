@@ -7,7 +7,6 @@ import { } from '@ant-design/icons';
 import hostConfig from '../../config/host.js'
 const { apihost, domain } = hostConfig
 
-
 import {
   Row, Col, Image, Typography,
   Button,ConfigProvider,Layout
@@ -175,7 +174,7 @@ const Barrage = ({ prebrs,pid}) => {
               style={{
                 animation: `${fAnimation ?? ''}`,
               }} 
-              preview={false} alt={'🌹'} src='/img/icon/f128.png'
+              preview={false} alt={'🌹'} src='/img/icon/ff128.png'
             />
           </Button>
         </ConfigProvider>
@@ -198,7 +197,7 @@ const Pi = ({ pioneer }) => {
       <NavBar act="2" />
 
       <div className={styles.Pcontainer}>
-        <Title level={1} className={`${styles.CenterTitle}`} style={{ marginBottom: '7vh' }}>Pioneer</Title>
+        {/* <Title level={1} className={`${styles.CenterTitle}`} style={{ marginBottom: '7vh' }}>Pioneer</Title> */}
         <Row className={styles.row}>
           <Col span={12} className={styles.leftColumn}>
             <Image
@@ -209,9 +208,9 @@ const Pi = ({ pioneer }) => {
             />
           </Col>
           <Col span={12} className={styles.rightColumn}>
-            <Title level={1} className={styles.whiteText} style={{/*  fontWeight: '500'  */ }}>{pioneer.name}</Title>
+            <Title level={1} className={styles.whiteText} style={{/*  fontWeight: '500'  */}}>{pioneer.name}</Title>
 
-            <Paragraph className={`${styles.whiteText} ${styles.Paragraph}`}
+            <Paragraph className={`${styles.whitePar} ${styles.Paragraph}`}
               style={{ fontSize: '24px', lineHeight: '2', textIndent: '2' }}
             >
               {pioneer.detail}
@@ -225,12 +224,14 @@ const Pi = ({ pioneer }) => {
           <Row className={styles.row}>
             <Col span={24} style={{ zIndex: 2 }}>
               <Title level={1} className={styles.whiteText} style={{ textAlign: 'center', fontWeight: '500' }}>伟大事迹</Title>
-              <Paragraph className={`${styles.whiteText} ${styles.Paragraph}`}
-                style={{ fontSize: '24px' }}
-              >
-                {pioneer.story}
-              </Paragraph>
-
+                {
+                  pioneer.story.split('\n').map( (ctx,index) => 
+                    <Paragraph key={index} className={`${styles.whitePar} ${styles.Paragraph}`}
+                    style={{ fontSize: '24px' }}>
+                      {ctx}
+                    </Paragraph>
+                  )
+                }
             </Col>
           </Row>
         </div>

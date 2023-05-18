@@ -63,7 +63,7 @@ const News = ({ newsList,TopNews }) => {
                     <Link key={item.id} href={`${item.url.replace(domain,'')}`} passHref>
                     <div
                         className={styles.NewsCarousel}
-                        style={{ backgroundImage: `url(/img/news/${item.id}.png)` }}
+                        style={{ backgroundImage: item.pined_photo }}
                         >
                             <div
                                 className={styles.CarouselTitle}>
@@ -129,7 +129,7 @@ export async function getStaticProps() {
             "author": "新华社",
             "title": "习近平主持召开二十届中央财经委员会第一次会议强调 加快建设以实体经济为支撑的现代化产业体系 以人口高质量发展支撑中国式现代化",
             "published_date": "2023-05-08 07:05:11",
-            "url": "https://p20.ctbu.org/post/1"
+            "url": "https://p20.ctbu.org/news/1"
         },
         {
             "id": 2,
@@ -137,7 +137,7 @@ export async function getStaticProps() {
             "author": "共产党员网",
             "title": "二十大报告学习汇编 | 深入推进现代预算制度改革重点任务",
             "published_date": "2023-05-08 07:05:11",
-            "url": "https://p20.ctbu.org/post/2"
+            "url": "https://p20.ctbu.org/news/2"
         },
         {
             "id": 3,
@@ -145,7 +145,7 @@ export async function getStaticProps() {
             "author": null,
             "title": "【二十大代表风采录】李群：与病毒赛跑的疾控人",
             "published_date": "2023-05-08 07:05:11",
-            "url": "https://p20.ctbu.org/post/3"
+            "url": "https://p20.ctbu.org/news/3"
         },
         {
             "id": 4,
@@ -153,7 +153,7 @@ export async function getStaticProps() {
             "author": null,
             "title": "【二十大代表风采录】于吉红：科技梦助推中国梦",
             "published_date": "2023-05-08 07:05:11",
-            "url": "https://p20.ctbu.org/post/4"
+            "url": "https://p20.ctbu.org/news/4"
         }
     ]
 
@@ -166,7 +166,7 @@ export async function getStaticProps() {
                 timeout: 4000
             }
         )
-        if (response.status === 200) {
+        if (response.data?.code === 0) {
             newsList = response.data.data;
         }
     } catch (error) {
@@ -180,7 +180,7 @@ export async function getStaticProps() {
             "author": "新华社",
             "title": "习近平主持召开二十届中央财经委员会第一次会议强调 加快建设以实体经济为支撑的现代化产业体系 以人口高质量发展支撑中国式现代化",
             "published_date": "2023-05-08 15:09:11",
-            "pined_photo": null,
+            "pined_photo": '/img/news/1.png',
             "url": "http://p20.ctbu.org/news/1"
         },
         {
@@ -189,7 +189,7 @@ export async function getStaticProps() {
             "author": "共产党员网",
             "title": "二十大报告学习汇编 | 深入推进现代预算制度改革重点任务",
             "published_date": "2023-05-08 15:09:11",
-            "pined_photo": null,
+            "pined_photo": '/img/news/1.png',
             "url": "http://p20.ctbu.org/news/2"
         }
     ]

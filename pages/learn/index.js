@@ -67,7 +67,7 @@ const News = ({ learnDetail,TopLearns }) => {
                     <Link key={item.id} href={`${item.url.replace(domain,'')}`} passHref>
                         <div
                             className={styles.NewsCarousel}
-                            style={{ backgroundImage: `url(/img/learn/${item.id}.png)` }}
+                            style={{ backgroundImage: item.pined_photo }}
                         >
                             <div
                                 className={styles.CarouselTitle}>

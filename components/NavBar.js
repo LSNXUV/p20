@@ -18,6 +18,7 @@ const NavBar = (props) => {
     const [bgColor, setBgColor] = useState('#9a0000');
 
     const handleRouteChangeComplete = (url) => {
+        // console.log(url,' ',router.pathname)
         if (url !== '/') {
             if (router.pathname === '/') {
                 scrollToNavSmoothly();
@@ -43,7 +44,7 @@ const NavBar = (props) => {
         return () => {
             router.events.off('routeChangeComplete', handleRouteChangeComplete);
         };
-    }, [router.pathname])
+    }, [router.events, handleRouteChangeComplete])
 
     useEffect(() => {
         if (props.act === '5') {
@@ -52,7 +53,7 @@ const NavBar = (props) => {
         } else {
             setBgColor('#9a0000');
         }
-    }, [props.act, router])
+    }, [props.act])
 
     const HomeNavList = [
         { title: 'ㅤㅤ首页ㅤㅤ', nav: '/' },
@@ -66,12 +67,10 @@ const NavBar = (props) => {
         <Layout>
             {shouldShowImage() && (
                 <div className={styles.topHeader}>
-                    <Image className={styles.topImage} alt={'党'} src={'/img/other/4.jpg'} preview={false}></Image>
+                    <Image className={styles.topImage} height={'30vh'} width={'100vw'} alt={'党'} src={'/img/other/p.png'} preview={false}></Image>
                 </div>
             )}
             <div className={styles.Header} style={{ backgroundColor: bgColor }}>
-
-                {/* <GoogleOutlined size={24} color='#fff' style={{ marginLeft: '9vw' }} /> */}
                 <Image className={styles.logo} alt={'党'}  preview={false} src={'/img/logo.png'}/>
 
                 <ConfigProvider
@@ -79,13 +78,16 @@ const NavBar = (props) => {
                         components: {
                             Menu: {
                                 //字色
-                                colorItemText: '#ffffff',
+                                colorItemText: '#9a0000',
                                 colorItemTextHover: '#9a0000',
                                 colorItemTextSelectedHorizontal: '#9a0000',
+                                colorItemTextSelected:'#ffffff',
                                 //背景色
-                                colorItemBg: '#9a0000',
+                                colorItemBg: '#ffffff',
                                 colorItemBgHover: '#ffffff',//不起作用??
-                                colorItemBgSelectedHorizontal: '#ffffff'
+                                colorItemBgSelectedHorizontal: '#ffffff',
+                                colorItemBgSelected:'#9a0000',
+                                colorItemBgHover:'#ffffff',
                             }
                         }
                     }}
@@ -94,7 +96,6 @@ const NavBar = (props) => {
                         className={props.act != '5' ? 'custom-menu' : 'custom-menu-cinema'}
                         style={{ backgroundColor: bgColor }}
                         mode="horizontal"
-                        overflowedIndicator
                         selectedKeys={[props.act == '5' ? null : props.act]}
                         items={HomeNavList.map((nav, index) => {
                             return {
