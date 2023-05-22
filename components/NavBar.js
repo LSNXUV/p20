@@ -8,7 +8,7 @@ import {
     ConfigProvider, Image,
     Layout, Menu, 
 } from 'antd';
-import { useState, useEffect } from 'react';
+import { useState, useEffect,useCallback } from 'react';
 
 
 
@@ -17,7 +17,7 @@ const NavBar = (props) => {
     const router = useRouter();
     const [bgColor, setBgColor] = useState('#9a0000');
 
-    const handleRouteChangeComplete = (url) => {
+    const handleRouteChangeComplete = useCallback((url) => {
         // console.log(url,' ',router.pathname)
         if (url !== '/') {
             if (router.pathname === '/') {
@@ -26,7 +26,7 @@ const NavBar = (props) => {
                 scrollToNavInstantly();
             }
         }
-    };
+    }, [router.pathname]);
 
     const scrollToNavSmoothly = () => {
         window.scrollTo({ top: 24 * window.innerHeight / 100, behavior: 'smooth' });

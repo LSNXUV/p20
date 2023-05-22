@@ -22,6 +22,7 @@ const { Title, Text } = Typography;
 
 const News = ({ newsList,TopNews }) => {
 
+    // console.log(TopNews)
     useEffect(() => {
 
     }, []);
@@ -63,7 +64,7 @@ const News = ({ newsList,TopNews }) => {
                     <Link key={item.id} href={`${item.url.replace(domain,'')}`} passHref>
                     <div
                         className={styles.NewsCarousel}
-                        style={{ backgroundImage: item.pined_photo }}
+                        style={{ backgroundImage: `url(${item.pined_photo})` }}
                         >
                             <div
                                 className={styles.CarouselTitle}>

@@ -42,6 +42,7 @@ const News = ({ learnDetail,TopLearns }) => {
 		}
 	]*/
 
+    // console.log(TopLearns)
     const carouselRef = useRef()
 
     useEffect(() => {
@@ -67,7 +68,7 @@ const News = ({ learnDetail,TopLearns }) => {
                     <Link key={item.id} href={`${item.url.replace(domain,'')}`} passHref>
                         <div
                             className={styles.NewsCarousel}
-                            style={{ backgroundImage: item.pined_photo }}
+                            style={{ backgroundImage: `url(${item.pined_photo})` }}
                         >
                             <div
                                 className={styles.CarouselTitle}>
