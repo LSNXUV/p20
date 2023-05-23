@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 import AdMenu from '../../../components/adm/menu.js'
 
 import {
-  Image,theme,
+  Image,
   Layout, Typography,
 } from 'antd';
 
@@ -25,10 +25,6 @@ export default function Home({ }) {
 
   }, [])
 
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
-
   return (
     <Layout className={styles.container}>
 
@@ -37,9 +33,8 @@ export default function Home({ }) {
       <Content className={styles.Content}
         style={{
           margin: '24px 16px',
-          padding: 24,
-          minHeight: 280,
-          background: colorBgContainer,
+          padding: '1vw 3vw',
+          minHeight: '50vh',
         }}
       >
         <Title level={2}>榜样管理</Title>

@@ -2,7 +2,10 @@ import { useState, useRef, useEffect } from 'react';
 import {
   Carousel, Button, Card, Image, ConfigProvider, Space
 } from 'antd';
-import { LeftOutlined, RightOutlined, PlayCircleOutlined, PauseCircleOutlined } from '@ant-design/icons';
+import { 
+  LeftOutlined, RightOutlined, 
+  PlayCircleOutlined, PauseCircleOutlined 
+} from '@ant-design/icons';
 
 import dynamic from 'next/dynamic'
 

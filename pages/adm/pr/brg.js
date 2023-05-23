@@ -25,9 +25,6 @@ export default function Home({ }) {
 
   }, [])
 
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
 
   return (
     <Layout className={styles.container}>
@@ -39,7 +36,6 @@ export default function Home({ }) {
           margin: '24px 16px',
           padding: 24,
           minHeight: 280,
-          background: colorBgContainer,
         }}
       >
         <Title level={2}>弹幕管理</Title>
