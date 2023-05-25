@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 import AdMenu from '../../../components/adm/menu.js'
 
 import {
-  Image,theme,
+  Image, theme,
   Layout, Typography,
 } from 'antd';
 
@@ -29,13 +29,13 @@ export default function Home({ }) {
   return (
     <Layout className={styles.container}>
 
-      <AdMenu SelectKey={"22"} OpenSubKey={'2'}/>
+      <AdMenu SelectKey={"22"} OpenSubKey={'2'} />
 
       <Content className={styles.Content}
         style={{
           margin: '24px 16px',
-          padding: 24,
-          minHeight: 280,
+          padding: '5vh 5vw 10vh',
+          minHeight: '50vh',
         }}
       >
         <Title level={2}>弹幕管理</Title>

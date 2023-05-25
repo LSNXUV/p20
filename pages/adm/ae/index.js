@@ -1,37 +1,42 @@
 
 import styles from '../../../styles/adm/adm.module.css'
 
-import { useEffect,useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import AdMenu from '../../../components/adm/menu.js'
 
 import {
-  Image,message,List,Button,Tooltip,
-  Layout, Typography,Popconfirm 
+  message, List, Button, Tooltip,
+  Layout, Typography, Popconfirm,Modal,Empty 
 } from 'antd';
 
 import hostConfig from '../../../config/host.js'
 
-const { apihost, domain } = hostConfig
+const { apihost } = hostConfig
 
 import axios from 'axios';
 import { useRouter } from 'next/router';
 
-const { Content, Sider, Header } = Layout;
+const { Content } = Layout;
 const { Title, Text } = Typography;
 
+const Comments = ({data,fresh, messageApi }) => {
 
-const Aes = ({articles,messageApi}) => {
-  
-  const [Articles, setArticles] = useState(articles)
+  const router = useRouter()
+  const [Cmts, setCmts] = useState(data)
 
-  const freshAes = async () => {
+  useEffect(() => {
+    
+    console.log(Cmts)
+  }, [])
+
+  const delCmt = async (id) => {
+
     try {
       const response = await axios.post(
-        apihost + '/v1/admin/post/fetch',
+        apihost + '/v1/admin/post/drop',
         {
-          pageSize:8,
-          page:1
+          id
         },
         {
           headers: {
@@ -41,13 +46,51 @@ const Aes = ({articles,messageApi}) => {
         }
       )
       if (response.data?.code === 0) {
-        setArticles(response.data.data)
+        messageApi.open({
+          type: 'success',
+          content: response.data?.message,
+        })
+        await freshCmts(id)
+      }
+
+    } catch (error) {
+      console.error(error);
+      return messageApi.open({
+        type: 'error',
+        content: '网络错误!',
+      })
+    }
+  }
+
+  const ViewDetail = (id) => {
+    router.push(`/adm/ae/cmt/${id}`)
+  }
+
+  const freshCmts = async (id) => {
+    try {
+      const response = await axios.post(
+        apihost + '/v1/admin/comment/fetch',
+        {
+          id,
+          pageSize: 8,
+          page: 1
+        },
+        {
+          headers: {
+            Session: sessionStorage.getItem('sk') ?? '未登录 need login'
+          },
+          timeout: 4000
+        }
+      )
+      if (response.data?.code === 0) {
+        console.log(response.data.data)
+        setCmts(response.data.data.comments.data)
         messageApi.open({
           type: 'success',
           content: '刷新成功!',
         })
       }
-  
+
     } catch (error) {
       messageApi.open({
         type: 'error',
@@ -56,50 +99,54 @@ const Aes = ({articles,messageApi}) => {
       console.error(error);
     }
   }
+
   return (
-    <div style={{ marginTop: '0vh',padding:'2vw' }}>
+    <div style={{ padding: '2vw' }}>
       <List
+        
+        locale={{emptyText:(
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description={"暂无评论哦"}
+          />
+        )}}
         header={
-          <Tooltip title={"点击刷新列表"}>
-            <Title level={2}
-              style={{cursor:'pointer',width:'8rem',/* backgroundColor:'red' */}}
-              onClick={freshAes}
-            >文章列表</Title>
-          </Tooltip>}
+          <Title level={3}
+            style={{ cursor: 'pointer', width: '8rem',}}
+        
+          >评论列表</Title>}
         pagination={{
           position: 'bottom',
           align: 'left',
-          
+          onChange: (page) => {
+          },
+          pageSize: 4,
         }}
-        dataSource={Articles}
+        dataSource={Cmts}
         renderItem={(item) =>
           <List.Item
             actions={[
-              <Button key="submit" type="primary" >
-                查看详情
-              </Button>,
               <Popconfirm
-                title="删除文章"
-                description="你确定要删除该文章吗?"
-                okText="确认删除"
-                cancelText="我再想想"
+                title="删除"
+                description="你确定要删除该评论吗?"
+                okText="确认"
+                cancelText="取消"
+                onConfirm={() => {
+                  delCmt(item.id)
+                }}
               >
-                <Button key="delete" danger 
-
-                >
-                  删除
-                </Button>
+                <Button type='primary' key="delete" danger >删除</Button>
               </Popconfirm>,
-  
             ]}
-            // extra = {item.published_date}
-            style={{ cursor: 'pointer' }}
-            onClick={() => {
-              
-             
-            }}
+          // extra = {item.published_date}
+          // style={{ cursor: 'pointer' }}
+
           >
-            <Text>{item.title ?? '暂无标题哦'}</Text>
+            <Text 
+              style={{ cursor: 'pointer' }} 
+              onClick={() => {
+                  ViewDetail(item.id)
+              }}>{item?.content ?? '暂无内容哦'}</Text>
           </List.Item>
         }
       />
@@ -107,17 +154,224 @@ const Aes = ({articles,messageApi}) => {
   )
 }
 
+const Aes = ({ articles, messageApi }) => {
 
-export default function Ae({acls}) {
+  const router = useRouter()
+  const [modalOpen, setModalOpen] = useState(false)
+  const [modalCmts, setmodalCmts] = useState([])
+
+  const [Articles, setArticles] = useState(articles)
+
+  useEffect(() => {
+    
+    freshAes()
+    if (!sessionStorage.getItem('sk')) {
+      messageApi.open({
+        type: 'error',
+        content: '请先登录!',
+        duration: 2,
+        onClose: () => {
+          router.push('/adm/login')
+        }
+      })
+
+      return
+    }
+  }, [])
+  
+
+  const delAe = async (id) => {
+
+    try {
+      const response = await axios.post(
+        apihost + '/v1/admin/post/drop',
+        {
+          id
+        },
+        {
+          headers: {
+            Session: sessionStorage.getItem('sk') ?? '未登录 need login'
+          },
+          timeout: 4000
+        }
+      )
+      if (response.data?.code === 0) {
+        messageApi.open({
+          type: 'success',
+          content: response.data?.message,
+        })
+        await freshAes()
+      }
+
+    } catch (error) {
+      console.error(error);
+      return messageApi.open({
+        type: 'error',
+        content: '网络错误!',
+      })
+    }
+  }
+
+  const ViewDetail = (id) => {
+    router.push(`/adm/ae/${id}`)
+  }
+
+  const freshAes = async () => {
+    try {
+      const response = await axios.post(
+        apihost + '/v1/admin/post/fetch',
+        {
+          pageSize: 18,
+          page: 1
+        },
+        {
+          headers: {
+            Session: sessionStorage.getItem('sk') ?? '未登录 need login'
+          },
+          timeout: 4000
+        }
+      )
+      if (response.data?.code === 0) {
+        setArticles(response.data.data.posts.data)
+      }
+
+    } catch (error) {
+      messageApi.open({
+        type: 'error',
+        content: '刷新失败!',
+      })
+      console.error(error);
+    }
+  }
+
+  const ModalCancel = () => {
+    // console.log('cancle',modalData)
+
+    // setmodalData(null)
+    setModalOpen(false)
+    
+  }
+
+  const ViewCmts = async (id) => {
+
+    try {
+      const response = await axios.post(
+        apihost + '/v1/admin/post/getComments',
+        {
+          id,
+          pageSize: 8,
+          page: 1
+        },
+        {
+          headers: {
+            Session: sessionStorage.getItem('sk') ?? '未登录 need login'
+          },
+          timeout: 4000
+        }
+      )
+      if (response.data?.code === 0) {
+        setmodalCmts(response.data?.data.comments.data) 
+      }
+  
+    } catch (error) {
+      console.error(error);
+    }
+
+    setModalOpen(true)
+  }
+
+  return (
+    <div style={{ marginTop: '0vh', padding: '2vw' }}>
+      <List
+        
+        locale={{emptyText:(
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description={"暂无数据哦"}
+          />
+        )}}
+        header={
+          <Tooltip title={"点击刷新列表"}>
+            <Title level={2}
+              style={{ cursor: 'pointer', width: '8rem',/* backgroundColor:'red' */ }}
+              onClick={()=>{
+                freshAes()
+                messageApi.open({
+                  type: 'success',
+                  content: '刷新成功!',
+                })
+              }}
+            >文章列表</Title>
+          </Tooltip>}
+        pagination={{
+          position: 'bottom',
+          align: 'left',
+          onChange: (page) => {
+          },
+          pageSize: 6,
+        }}
+        dataSource={Articles}
+        renderItem={(item) =>
+          <List.Item
+
+            actions={[
+              <Button key="submit" type="primary"
+                onClick={() => {
+                  ViewCmts(item.id)
+                }}>
+                查看评论
+              </Button>,
+              <Popconfirm
+                title="删除"
+                description="你确定要删除该文章吗?"
+                okText="确认"
+                cancelText="取消"
+                onConfirm={() => {
+                  delAe(item.id)
+                }}
+              >
+                <Button key="delete" danger >删除</Button>
+              </Popconfirm>,
+
+            ]}
+          // extra = {item.published_date}
+          // style={{ cursor: 'pointer' }}
+
+          >
+            <Text
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                ViewDetail(item.id)
+              }}>{item.title ?? '暂无标题哦'}</Text>
+          </List.Item>
+        }
+      />
+      {
+        <Modal
+          open={modalOpen}
+          onCancel={ModalCancel}
+          width='50vw'
+          footer={[
+          ]}
+        >
+          <Comments data={modalCmts} fresh={ViewCmts} messageApi={messageApi} />
+        </Modal>
+      }
+    </div>
+  )
+}
+
+
+export default function Ae({ }) {
 
   const router = useRouter()
   const [messageApi, contextHolder] = message.useMessage()
 
-  const [Articles, setArticles] = useState(acls ?? [])
+  const [Articles, setArticles] = useState( [])
 
   useEffect(() => {
 
-    if(!sessionStorage.getItem('sk')){
+    if (!sessionStorage.getItem('sk')) {
       messageApi.open({
         type: 'error',
         content: '请先登录!',
@@ -126,7 +380,7 @@ export default function Ae({acls}) {
           router.replace('/adm/login')
         }
       })
-      
+
       return
     }
   }, [])
@@ -143,7 +397,7 @@ export default function Ae({acls}) {
           minHeight: '50vh',
         }}
       >
-        <Aes articles={Articles} messageApi={messageApi}/>
+        <Aes articles={Articles} messageApi={messageApi} />
       </Content>
 
     </Layout>
@@ -152,95 +406,10 @@ export default function Ae({acls}) {
 
 export const getStaticProps = async (ctx) => {
 
-  let acls = [
-    {
-			"id": 1,
-			"editor": "许建文",
-			"author": "新华社",
-			"title": "习近平主持召开二十届中央财经委员会第一次会议强调 加快建设以实体经济为支撑的现代化产业体系 以人口高质量发展支撑中国式现代化",
-			"published_date": "2023-05-08 15:09:11",
-			"url": "https://cpc20.ctbu.org/news/1"
-		},
-		{
-			"id": 2,
-			"editor": "许建文",
-			"author": "共产党员网",
-			"title": "二十大报告学习汇编 | 深入推进现代预算制度改革重点任务",
-			"published_date": "2023-05-08 15:09:11",
-			"url": "https://cpc20.ctbu.org/news/2"
-		},
-		{
-			"id": 3,
-			"editor": null,
-			"author": "共产党员网",
-			"title": "【二十大代表风采录】李群：与病毒赛跑的疾控人",
-			"published_date": "2023-05-08 15:09:11",
-			"url": "https://cpc20.ctbu.org/news/3"
-		},
-		{
-			"id": 4,
-			"editor": null,
-			"author": null,
-			"title": "【二十大代表风采录】于吉红：科技梦助推中国梦",
-			"published_date": "2023-05-08 15:09:11",
-			"url": "https://cpc20.ctbu.org/news/4"
-		},
-		{
-			"id": 5,
-			"editor": null,
-			"author": null,
-			"title": "习近平新时代中国特色社会主义思想",
-			"published_date": "2023-05-08 15:09:11",
-			"url": "https://cpc20.ctbu.org/learn/5"
-		},
-		{
-			"id": 6,
-			"editor": "许建文",
-			"author": "求是",
-			"title": "习近平：更好把握和运用党的百年奋斗历史经验",
-			"published_date": "2023-05-08 15:09:11",
-			"url": "https://cpc20.ctbu.org/learn/6"
-		},
-		{
-			"id": 7,
-			"editor": "周世雄",
-			"author": "中央党史和文献研究院网站",
-			"title": "【党史百年·天天读】5月7日",
-			"published_date": "2023-05-08 15:09:11",
-			"url": "https://cpc20.ctbu.org/learn/7"
-		},
-		{
-			"id": 8,
-			"editor": "徐瑶",
-			"author": "新华社",
-			"title": "二十大报告摘登 | 新时代十年的伟大变革具有里程碑意义",
-			"published_date": "2023-05-08 15:09:11",
-			"url": "https://cpc20.ctbu.org/learn/8"
-		}
-	]
-
-  try {
-    const response = await axios.post(
-      apihost + '/v1/admin/post/fetch',
-      {
-        pageSize:8,
-        page:1
-      },
-      {
-        timeout: 4000
-      }
-    )
-    if (response.data?.code === 0) {
-      acls = response.data?.data
-    }
-
-  } catch (error) {
-    console.error(error);
-  }
+ 
 
   return {
     props: {
-      acls
     }
   }
 }

@@ -4,8 +4,8 @@ import { useEffect,useState } from 'react'
 import styles from '../../styles/adm/login.module.css'
 
 import {
-    Image, theme, Form, Input, Button, Col, Row,
-    Layout, Typography, Checkbox, Card, message,
+    Image, Form, Input, Button, Col, Row,
+    Layout, Typography, Card, message,
     ConfigProvider
 } from 'antd';
 
@@ -17,7 +17,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 export default function Login({ vcodepic,vcodeid }) {
 
@@ -94,6 +94,7 @@ export default function Login({ vcodepic,vcodeid }) {
                 
 
             }else{
+                refreshVcode()
                 return messageApi.open({
                     type: 'error',
                     content: response.data?.message,
@@ -102,6 +103,7 @@ export default function Login({ vcodepic,vcodeid }) {
             
         } catch (error) {
             console.error(error);
+            
             return messageApi.open({
                 type: 'error',
                 content: '登录失败!',

@@ -91,9 +91,11 @@ export default function Home({Carousels,newsList}) {
               Carousels.map((img,index) => 
                 <Image 
                   key={index}
-                  // className={styles.CarouselImage}
-                  style={{objectFit:'cover',objectPosition:'center'}}
-                  src={img.pic_url}  
+                  width={'100vw'}
+                  // height={'66vh'}
+                  className={styles.CarouselImage}
+                  // style={{objectFit:'cover',objectPosition:'0 -9vh'}}
+                  // src={img?.pic_url}  
                   alt="学习强国"
                   fallback="https://www.hangzhou.com.cn/templateRes/202209/08/103025/assets/images/banner.jpg"
                   preview={false}
@@ -190,7 +192,7 @@ export const getStaticProps = async (ctx) => {
       Carousels = response.data.data.posterStands
       newsList = response.data.data.pinedNews
     }
-    console.log(Carousels,newsList)
+    // console.log(Carousels,newsList)
 } catch (error) {
     console.error(error);
 }

@@ -1,7 +1,7 @@
 
 export default {
 
-    domain: 'http://local.cpc20.ctbu.org:15011',
+    domain: 'https://cpc20.ctbu.org',
 
     apihost:'http://dev.api.cpc20.ctbu.org'
 
